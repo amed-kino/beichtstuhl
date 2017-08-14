@@ -3,6 +3,7 @@ var childProcess = require('child_process')
 var terminate = require('terminate');
 
 var processHandler = null
+var mirrorType = null
 
 function terminateProcess (handler) {
   terminate(handler.pid, function(err, done){
@@ -11,23 +12,27 @@ function terminateProcess (handler) {
     } else {
       console.log('Done!');
     }
-    console.log('.')
   });
   return null
 }
 
+function initializeMirror () {
+  processHandler = childProcess.execFile('sh', ['./scripts/play_mirror_without_filter.sh'], (err, stdout, stderr) => {});
+  mirrorType = 'withoutFilter'
+}
+if (!processHandler){initializeMirror()}
 
 gkm.events.on('key.*', function(data) {
   if (this.event === 'key.released'){
     if (data[0] === 'D'){
-      if (!processHandler){
-        processHandler = childProcess.execFile('sh', ['./scripts/play.sh'], (err, stdout, stderr) => {});
-      }
-
-    }
-    if (data[0] === 'C'){
-      if (processHandler){
+      if(mirrorType ==='filter'){
+        mirrorType = 'withoutFilter'
         processHandler = terminateProcess(processHandler)
+        processHandler = childProcess.execFile('sh', ['./scripts/play_mirror_without_filter.sh'], (err, stdout, stderr) => {});
+      } else {
+        mirrorType = 'filter'
+        processHandler = terminateProcess(processHandler)
+        processHandler = childProcess.execFile('sh', ['./scripts/play_mirror_without_filter.sh'], (err, stdout, stderr) => {});
       }
 
     }
