@@ -26,4 +26,14 @@ install: `$ apt-get install mplayer`
 configurations:
 - Copy the file `_files/input.con` into `~/.mplayer/input.conf` to disable key control.
 
+### 4- Java
+The latest java is required to run node `child_process`. You can skip it if you have the latest version.
+- `$ add-apt-repository ppa:webupd8team/java`  
+- `apt-get update`
+- `apt-get install oracle-java8-installer`
+
+
 ## Installation
+
+- Clone the repository locally.
+- run `$ npm install`
