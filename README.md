@@ -18,4 +18,12 @@ Root privileges may be required, adding `$ sudo _command_` before every command 
   `$ n 6.9.4`
 
 
+### 2- [ffmpeg](https://www.ffmpeg.org/)
+install: `$ apt-get install ffmpeg`
+
+### 3- [mplayer](http://www.mplayerhq.hu/)
+install: `$ apt-get install mplayer`  
+configurations:
+- Copy the file `_files/input.con` into `~/.mplayer/input.conf` to disable key control.
+
 ## Installation
