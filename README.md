@@ -18,7 +18,7 @@ Root privileges may be required, adding `$ sudo _command_` before every command 
   `$ n 6.9.4`
 
 ### 2- [pm2](https://github.com/Unitech/pm2)
-install: `$ npm install forever -g`
+install: `$ npm install pm2 -g`
 
 ### 3- [ffmpeg](https://www.ffmpeg.org/)
 install: `$ apt-get install ffmpeg`
