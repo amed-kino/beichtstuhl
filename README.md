@@ -39,3 +39,13 @@ The latest java is required to run node `child_process`. You can skip it if you 
 
 - Clone the repository locally.
 - run `$ npm install`
+
+
+## Adding Beichtstuhl to startup
+It is possible to start Beichtstuhl with boot:  
+Open `Startup Applications`, click `add`
+![alt text](_files/Startup Applications.png "Startup Applications Program")
+
+`pm2 start ~/beistuhl/index.js`  
+assuming that the local repository is cloned in `/home/user/`  
+To stop Beichtstuhl from running in deadmond mode (background mode) run: `pm2 stop ~/beistuhl/index.js`
