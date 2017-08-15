@@ -6,8 +6,9 @@ var commands = require('./commands.js')
 var processHandler = null
 var mirrorType = null
 var recording = false
+var recordingHandler = null
 var onScreenDisplay = null
-
+console.log(commands.recordingCmd, commands.recordingArgs.concat(commands.recordingArgs))
 function terminateProcess(pid){
   terminate(pid)
   return null
@@ -33,11 +34,13 @@ function exitHandler(options, err) {
     if (options.exit) process.exit();
 }
 
-
+// prevent keys from being pressed.
+function keypressPreventAction() { onScreenDisplay = childProcess.exec(commands.onScreenDisplay.notAllowed); }
 
 
 setInterval(function(){
     if(recording) {
+      if (onScreenDisplay) { onScreenDisplay = terminateProcess(onScreenDisplay.pid) }
       onScreenDisplay = childProcess.exec(commands.onScreenDisplay.recording , function(err, stdout,stderr){});
     }
 }, 6000);
@@ -52,11 +55,15 @@ process.on('uncaughtException', exitHandler.bind(null, {exit:true}));
 gkm.events.on('key.*', function(data) {
 
   if (this.event === 'key.released'){
+
     // close the previous OSD
     if (onScreenDisplay) { onScreenDisplay = terminateProcess(onScreenDisplay.pid) }
+    if (recordingHandler) { recordingHandler = terminateProcess(recordingHandler.pid) }
 
     if (data[0] === 'D'){
-      if (recording){onScreenDisplay = childProcess.exec(commands.onScreenDisplay.notAllowed , function(err, stdout,stderr){});}else if(mirrorType ==='filter'){
+      if (recording){
+        keypressPreventAction()
+      } else if (mirrorType ==='filter'){
         mirrorType = 'withoutFilter'
         processHandler = terminateProcess(processHandler.pid)
         processHandler = childProcess.spawn(commands.playerCmd, commands.withoutFilterArgs.concat([]), {stdio: 'ignore', detached: true});
@@ -72,9 +79,25 @@ gkm.events.on('key.*', function(data) {
         onScreenDisplay = childProcess.exec(commands.onScreenDisplay.stopRecording , function(err, stdout,stderr){});
       } else {
         recording = true
+        console.log('recording /////')
         onScreenDisplay = childProcess.exec(commands.onScreenDisplay.recording , function(err, stdout,stderr){});
+        recordingHandler = childProcess.execFile('sh', ['./scripts/record.sh'], (err, stdout, stderr) => {
+          console.log(err, stdout, stderr)
+        });
 
+        // recordingHandler = childProcess.spawn(commands.recordingCmd, commands.recordingArgs, {stdio: 'ignore', detached: true});
       }
+    }
+    if (data[0] === 'P'){
+      if (recording){
+        keypressPreventAction()
+      } else {
+        onScreenDisplay = childProcess.exec(commands.onScreenDisplay.recording , function(err, stdout,stderr){});
+      }
+    }
+    if (data[0] === 'Q'){
+      // temporarily for debugging
+      abort();
     }
   }
 })
