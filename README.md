@@ -17,20 +17,22 @@ Root privileges may be required, adding `$ sudo _command_` before every command 
   `$ npm install -g n`  
   `$ n 6.9.4`
 
+### 2- [forever](https://github.com/foreverjs/forever)
+install: `$ npm install forever -g`
 
-### 2- [ffmpeg](https://www.ffmpeg.org/)
+### 3- [ffmpeg](https://www.ffmpeg.org/)
 install: `$ apt-get install ffmpeg`
 
-### 3- [mplayer](http://www.mplayerhq.hu/)
+### 4- [mplayer](http://www.mplayerhq.hu/)
 install: `$ apt-get install mplayer`  
 configurations:
 - Copy the file `_files/input.con` into `~/.mplayer/input.conf` to disable key control.
 
-### 4- Java
+### 5- Java
 The latest java is required to run node `child_process`. You can skip it if you have the latest version.
 - `$ add-apt-repository ppa:webupd8team/java`  
-- `apt-get update`
-- `apt-get install oracle-java8-installer`
+- `$ apt-get update`
+- `$ apt-get install oracle-java8-installer`
 
 
 ## Installation
