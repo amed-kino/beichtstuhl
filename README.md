@@ -49,4 +49,4 @@ Open `Startup Applications`, click `add`
 
 `pm2 start ~/beistuhl/index.js`  
 assuming that the local repository is cloned in `/home/user/`  
-To stop Beichtstuhl from running in deadmond mode (background mode) run: `pm2 stop ~/beistuhl/index.js`
+To stop Beichtstuhl from running in daemon mode (background mode) run: `pm2 stop ~/beistuhl/index.js`
