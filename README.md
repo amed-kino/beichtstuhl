@@ -1,5 +1,5 @@
 ## BEICHTSTUHL
-A node.js tool made for beistuhl project.
+A node.js tool made for beichtstuhl project.
 
 ### Prerequisites
 This tool has been developed on [Ubuntu 16.04 (Xenial Xerus)](http://releases.ubuntu.com/16.04/), the following `System Requirements`, `Installation` and `instructions` are only for this Operating System.  
