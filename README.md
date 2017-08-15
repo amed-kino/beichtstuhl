@@ -29,7 +29,10 @@ install: `$ apt-get install mplayer`
 configurations:
 - Copy the file `_files/input.con` into `~/.mplayer/input.conf` to disable key control.
 
-### 5- Java
+### 5- [osd_cat](https://linux.die.net/man/1/osd_cat)
+ install: `$ apt-get install xosd-bin`
+
+### 6- Java
 The latest java is required to run node `child_process`. You can skip it if you have the latest version.
 - `$ add-apt-repository ppa:webupd8team/java`  
 - `$ apt-get update`
