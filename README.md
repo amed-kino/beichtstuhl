@@ -17,7 +17,7 @@ Root privileges may be required, adding `$ sudo _command_` before every command 
   `$ npm install -g n`  
   `$ n 6.9.4`
 
-### 2- [forever](https://github.com/foreverjs/forever)
+### 2- [pm2](https://github.com/Unitech/pm2)
 install: `$ npm install forever -g`
 
 ### 3- [ffmpeg](https://www.ffmpeg.org/)
