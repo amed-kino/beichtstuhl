@@ -42,8 +42,8 @@ The latest java is required to run node `child_process`. You can skip it if you 
 ## Installation
 
 - Clone the repository locally.
-- run `$ npm install`
-
+- Run `$ npm install`
+- Copy `_file/credentials.example.json` into `credentials.json` regarding the right google youtube-api credentials.
 
 ## Adding Beichtstuhl to startup
 It is possible to start Beichtstuhl with boot:  

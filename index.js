@@ -104,6 +104,16 @@ gkm.events.on('key.*', function(data) {
       }
     }
 
+    // Toggle record and stop- arbitrary has been set to 'Space'
+    if (data[0] === 'P'){
+      if (recording || playing){
+        keypressPreventAction()
+      } else {
+        showOSD(commands.onScreenDisplay.play)
+        playHandler =  childProcess.execFile('sh', ['./scripts/play.sh'], (err, stdout, stderr) => {});
+      }
+    }
+
 
     // Debug key - temporarily set, should be removed in production.
     if (data[0] === 'Q'){

@@ -1,3 +1,4 @@
 node_modules/
 outputs/*
+_files/credentials.json
 .DS_Store
