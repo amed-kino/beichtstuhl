@@ -1,1 +1,1 @@
-ffplay -f video4linux2 -i  /dev/video0
+mplayer -fs outputs/a.mpeg -xineramascreen 1
