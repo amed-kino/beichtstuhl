@@ -12,8 +12,13 @@
   "author": "hack.institute",
   "license": "MIT",
   "dependencies": {
+    "bug-killer": "^4.4.4",
     "gkm": "^0.1.0",
     "lien": "^3.0.4",
-    "terminate": "^2.1.0"
+    "opn": "^5.1.0",
+    "pretty-bytes": "^4.0.2",
+    "r-json": "^1.2.7",
+    "terminate": "^2.1.0",
+    "youtube-api": "^2.0.8"
   }
 }

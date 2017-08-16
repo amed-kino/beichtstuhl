@@ -29,7 +29,7 @@ function closePreviousOSD(){
 function startMirror(type){
   args = (type === 'filter') ? commands.withFilterArgs : commands.withoutFilterArgs
   if (mirrorHandler) { mirrorHandler = terminateProcess(mirrorHandler.pid) }
-  mirrorHandler = childProcess.spawn(commands.playerCmd, args);
+  // mirrorHandler = childProcess.spawn(commands.playerCmd, args);
 }
 
 function initializeMirror () {

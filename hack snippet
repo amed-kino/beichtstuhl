@@ -1,0 +1,26 @@
+google-oauth2-token -e "nostalgischbox@gmail.com" -p "vKw!U%aF3fhDE-DZ" -c "1006317260009-qi4s2mme9bp5md7ahlosn7ubaqn6i84f.apps.googleusercontent.com" -x "2fQ0YX5jLJCL1haNnqX38W77" -s "https://www.googleapis.com/auth/youtube" --json
+
+
+
+Nostalgisch Box
+nostalgischbox@gmail.com
+vKw!U%aF3fhDE-DZ
+
+
+
+{
+   "web":{
+      "client_id":"1006317260009-qi4s2mme9bp5md7ahlosn7ubaqn6i84f.apps.googleusercontent.com",
+      "project_id":"beichtstuhl-177012",
+      "auth_uri":"https://accounts.google.com/o/oauth2/auth",
+      "token_uri":"https://accounts.google.com/o/oauth2/token",
+      "auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs",
+      "client_secret":"2fQ0YX5jLJCL1haNnqX38W77",
+      "redirect_uris":[
+         "http://localhost:8488"
+      ],
+      "javascript_origins":[
+         "http://localhost"
+      ]
+   }
+}
