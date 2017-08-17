@@ -7,10 +7,11 @@ var OSD = require('./on_screen_display_commands.js')
 // Create variables placeholders
 var mirrorHandler = null
 var currentMirror = null
-
+var currentAduioEcho = null
 var recording = false
 var playing = false
 var recordingHandler = null
+var AudioEchoHandler = null
 var onScreenDisplay = null
 
 
@@ -33,6 +34,15 @@ function startMirror(mirrorSuffix){
   } else {
     if (mirrorHandler) { mirrorHandler = terminateProcess(mirrorHandler.pid) }
     mirrorHandler = childProcess.execFile('sh', ['./scripts/mirror_' + mirrorSuffix + '.sh'], (err, stdout, stderr) => {});
+  }
+}
+
+function startAduioEcho(audioSuffix){
+  if(audioSuffix === currentAduioEcho){
+    keypressPreventAction(false)
+  } else {
+    if (AudioEchoHandler) { AudioEchoHandler = terminateProcess(AudioEchoHandler.pid) }
+    AudioEchoHandler = childProcess.execFile('sh', ['./scripts/audio_' + audioSuffix + '.sh'], (err, stdout, stderr) => {});
   }
 }
 
@@ -104,7 +114,9 @@ gkm.events.on('key.*', function(data) {
 
     if (data[0] === '4'){
       if (!recording && !playing){
-        audioType = 'audio0'
+        audioType = 'filter'
+        startAduioEcho(audioType)
+        currentAduioEcho = audioType
         showOSD(OSD.audioNotFiltered)
       }else{
         keypressPreventAction()
@@ -112,8 +124,9 @@ gkm.events.on('key.*', function(data) {
     }
     if (data[0] === '5'){
       if (!recording && !playing){
-        audioType = 'audio1'
-        currentMirror = mirrorType
+        audioType = 'filter1'
+        startAduioEcho(audioType)
+        currentAduioEcho = audioType
         showOSD(OSD.audioFilter1)
       }else{
         keypressPreventAction()
@@ -121,8 +134,9 @@ gkm.events.on('key.*', function(data) {
     }
     if (data[0] === '6'){
       if (!recording && !playing){
-        audioType = 'audio2'
-        currentMirror = mirrorType
+        audioType = 'filter2'
+        startAduioEcho(audioType)
+        currentAduioEcho = audioType
         showOSD(OSD.audioFilter2)
       }else{
         keypressPreventAction()
@@ -137,10 +151,12 @@ gkm.events.on('key.*', function(data) {
         console.log('stop recording /////')
         if (recordingHandler) {
           // close after less that 5 seconds
-          setTimeout(function(){
-            recordingHandler = terminateProcess(recordingHandler.pid)
+          // setTimeout(function(){
+          //   recordingHandler = terminateProcess(recordingHandler.pid)
             showOSD(OSD.stopRecording)
-          }, 4700);
+            recordingHandler.stdin.write("q")
+            recordingHandler.kill()
+          // }, 4700);
         }
       } else {
         recording = true
