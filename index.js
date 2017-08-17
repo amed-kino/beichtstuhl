@@ -136,13 +136,12 @@ gkm.events.on('key.*', function(data) {
         recording = false
         console.log('stop recording /////')
         if (recordingHandler) {
-          // close after less that 2 seconds
+          // close after less that 5 seconds
           setTimeout(function(){
             recordingHandler = terminateProcess(recordingHandler.pid)
-          }, 1700);
+            showOSD(OSD.stopRecording)
+          }, 4700);
         }
-        showOSD(OSD.stopRecording)
-
       } else {
         recording = true
         console.log('recording /////')
