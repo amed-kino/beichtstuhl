@@ -192,7 +192,10 @@ process.stdin.resume();//so the program will not close instantly
 function exitHandler(options, err) {
 
     if (mirrorHandler) { mirrorHandler.kill() }
-    if (recordingHandler) { recordingHandler.kill() }
+    if (recordingHandler) {
+      terminateProcess(terminateProcess)
+      recordingHandler.kill()
+    }
     if (onScreenDisplay) { terminateProcess(onScreenDisplay.pid) }
 
     if (options.cleanup) console.log('clean');
