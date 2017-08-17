@@ -4,9 +4,9 @@
 var osd_cat = 'osd_cat -f -*-*-*-*-*-*-60-520-60-*-*-*-*-*'
 var osd_cat_smaller = 'osd_cat -o 320 -d 3 -c green -f -*-*-*-*-*-*-40-320-60-*-*-*-*-*'
 var osd_cat_delayed = 'osd_cat -o 320 -d 60 -f -*-*-*-*-*-*-60-520-60-*-*-*-*-*'
-var osd_cat_bottom = 'osd_cat -T Recording..... -A right -o -180 -p bottom -f -*-*-*-*-*-*-36-120-*-*-*-*-*-*'
+var osd_cat_other_side = 'osd_cat -A right -p bottom -f -*-*-*-*-*-*-36-120-*-*-*-*-*-*'
 
-var notAllowed = 'echo "Not allowed!" | ' + osd_cat_bottom
+var notAllowed = 'echo "Not allowed!" | ' + osd_cat_other_side
 var recording = 'echo "REC" | ' + osd_cat_delayed
 var stopRecording = 'echo "Recording done!\n\nfile is ready!" | ' + osd_cat_smaller
 var play = 'echo "PLAY" | ' + osd_cat

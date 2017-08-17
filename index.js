@@ -55,7 +55,6 @@ function keypressPreventAction(osdShow = true) {
 // show record after 3 seconds
 // it is related to show that keypress is not allowed and return back to record sign.
 function showRecordingOSDAgain () {
-  closePreviousOSD()
   showOSD(OSD.recording)
   setTimeout(function(){
       if(recording) {
