@@ -1,4 +1,4 @@
 node_modules/
 outputs/video_*
-outputs_Accepted/video_*
+outputs_accepted/video_*
 .DS_Store

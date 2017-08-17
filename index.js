@@ -32,7 +32,7 @@ function startMirror(mirrorSuffix){
     keypressPreventAction(false)
   } else {
     if (mirrorHandler) { mirrorHandler = terminateProcess(mirrorHandler.pid) }
-    // mirrorHandler = childProcess.execFile('sh', ['./scripts/mirror_' + mirrorSuffix + '.sh'], (err, stdout, stderr) => {});
+    mirrorHandler = childProcess.execFile('sh', ['./scripts/mirror_' + mirrorSuffix + '.sh'], (err, stdout, stderr) => {});
   }
 }
 
