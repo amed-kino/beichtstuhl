@@ -32,7 +32,7 @@ function startMirror(mirrorSuffix){
     keypressPreventAction(false)
   } else {
     if (mirrorHandler) { mirrorHandler = terminateProcess(mirrorHandler.pid) }
-    mirrorHandler = childProcess.execFile('sh', ['./scripts/mirror_' + mirrorSuffix + '.sh'], (err, stdout, stderr) => {});
+    // mirrorHandler = childProcess.execFile('sh', ['./scripts/mirror_' + mirrorSuffix + '.sh'], (err, stdout, stderr) => {});
   }
 }
 
@@ -102,26 +102,73 @@ gkm.events.on('key.*', function(data) {
       }
     }
 
+    if (data[0] === '4'){
+      if (!recording && !playing){
+        audioType = 'audio0'
+        showOSD(OSD.audioNotFiltered)
+      }else{
+        keypressPreventAction()
+      }
+    }
+    if (data[0] === '5'){
+      if (!recording && !playing){
+        audioType = 'audio1'
+        currentMirror = mirrorType
+        showOSD(OSD.audioFilter1)
+      }else{
+        keypressPreventAction()
+      }
+    }
+    if (data[0] === '6'){
+      if (!recording && !playing){
+        audioType = 'audio2'
+        currentMirror = mirrorType
+        showOSD(OSD.audioFilter2)
+      }else{
+        keypressPreventAction()
+      }
+    }
+
     // Toggle record and stop- arbitrary has been set to 'Space'
     if (data[0] === 'Space'){
+      closePreviousOSD()
       if (recording){
         recording = false
         console.log('stop recording /////')
-        if (recordingHandler) { recordingHandler = terminateProcess(recordingHandler.pid) }
+        if (recordingHandler) {
+          // close after less that 2 seconds
+          setTimeout(function(){
+            recordingHandler = terminateProcess(recordingHandler.pid)
+          }, 1700);
+        }
         showOSD(OSD.stopRecording)
 
       } else {
         recording = true
         console.log('recording /////')
         showOSD(OSD.recording)
-        recordingHandler = childProcess.execFile('sh', ['./scripts/record.sh'], (err, stdout, stderr) => {});
+        recordingHandler = childProcess.execFile('sh', ['./scripts/record.sh'], {killSignal: 'SIGINT'});
+      }
+    }
+
+    // Toggle record and stop- arbitrary has been set to 'Space'
+    if (data[0] === 'A'){
+      if (recording){
+        keypressPreventAction()
+      } else {
+        showOSD(OSD.save)
+        playHandler =  childProcess.execFile('sh', ['./scripts/accept_last.sh'], (err, stdout, stderr) => {
+          console.log(err, stdout, stderr)
+        });
       }
     }
 
     // Toggle record and stop- arbitrary has been set to 'Space'
     if (data[0] === 'P'){
-      if (recording || playing){
+      if (recording){
         keypressPreventAction()
+      }else if (playing) {
+        playHandler = terminateProcess(playHandler.pid)
       } else {
         showOSD(OSD.play)
         playHandler =  childProcess.execFile('sh', ['./scripts/play.sh'], (err, stdout, stderr) => {});
@@ -131,7 +178,7 @@ gkm.events.on('key.*', function(data) {
 
     // Debug key - temporarily set, should be removed in production.
     if (data[0] === 'Q'){
-      abort();
+      process.exit(0);
     }
   }
 })

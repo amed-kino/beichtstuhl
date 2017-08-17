@@ -10,6 +10,7 @@ var notAllowed = 'echo "Not allowed!" | ' + osd_cat_other_side
 var recording = 'echo "REC" | ' + osd_cat_delayed
 var stopRecording = 'echo "Recording done!\n\nfile is ready!" | ' + osd_cat_smaller
 var play = 'echo "PLAY" | ' + osd_cat
+var save = 'echo "SAVED!" | ' + osd_cat_smaller
 
 var videoNotFiltered = 'echo "Video Without Filters" | ' + osd_cat
 var videoFilter1 = 'echo "Video Filter 1" | ' + osd_cat
@@ -24,6 +25,7 @@ module.exports = {
   recording,
   stopRecording,
   play,
+  save,
   videoNotFiltered,
   videoFilter1,
   videoFilter2,
