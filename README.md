@@ -53,3 +53,6 @@ Open `Startup Applications`, click `add`
 `pm2 start ~/beistuhl/index.js`  
 assuming that the local repository is cloned in `/home/user/`  
 To stop Beichtstuhl from running in daemon mode (background mode) run: `pm2 stop ~/beistuhl/index.js`
+
+## Known Issues
+- .sh files: For some reasons, spawned child processes were not able to handle mirroring or recording for more than few seconds (they were freezing), it should be separated files for handling processes.

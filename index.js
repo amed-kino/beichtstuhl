@@ -2,11 +2,12 @@
 var gkm = require('gkm');
 var childProcess = require('child_process')
 var terminate = require('terminate');
-var commands = require('./commands.js')
+var OSD = require('./on_screen_display_commands.js')
 
 // Create variables placeholders
 var mirrorHandler = null
-var mirrorType = null
+var currentMirror = null
+
 var recording = false
 var playing = false
 var recordingHandler = null
@@ -26,34 +27,40 @@ function closePreviousOSD(){
   if (onScreenDisplay) { onScreenDisplay = terminateProcess(onScreenDisplay.pid)}
 }
 
-function startMirror(type){
-  args = (type === 'filter') ? commands.withFilterArgs : commands.withoutFilterArgs
-  if (mirrorHandler) { mirrorHandler = terminateProcess(mirrorHandler.pid) }
-  mirrorHandler = childProcess.spawn(commands.playerCmd, args);
+function startMirror(file_name){
+  if(file_name === currentMirror){
+    keypressPreventAction(false)
+  } else {
+    if (mirrorHandler) { mirrorHandler = terminateProcess(mirrorHandler.pid) }
+    mirrorHandler = childProcess.execFile('sh', ['./scripts/' + file_name + '.sh'], (err, stdout, stderr) => {});
+  }
 }
 
+
+
 function initializeMirror () {
-  mirrorType = 'withoutFilter' // variable may be needed globally
+  mirrorType = 'mirror_filter0'
   startMirror(mirrorType)
+  currentMirror = mirrorType
 }
 
 if (!mirrorHandler){initializeMirror()}
 
 // prevent keys from being pressed.
-function keypressPreventAction() {
-  showOSD(commands.onScreenDisplay.notAllowed)
-  showRecordingOSDAgain()
+function keypressPreventAction(osdShow = true) {
+  if (osdShow) {showOSD(OSD.notAllowed)}
+  if (recording) {showRecordingOSDAgain()}
 }
 
 // show record after 3 seconds
 // it is related to show that keypress is not allowed and return back to record sign.
 function showRecordingOSDAgain () {
   closePreviousOSD()
-  showOSD(commands.onScreenDisplay.recording)
+  showOSD(OSD.recording)
   setTimeout(function(){
       if(recording) {
         closePreviousOSD()
-        showOSD(commands.onScreenDisplay.recording)
+        showOSD(OSD.recording)
       }}, 3000);
 }
 
@@ -65,16 +72,34 @@ gkm.events.on('key.*', function(data) {
 
     closePreviousOSD()
 
-    // Switch filter - arbitrary has been set to 'D'
-    if (data[0] === 'D'){
-      if (recording){
+    if (data[0] === '1'){
+      if (!recording && !playing){
+        mirrorType = 'mirror_filter0'
+        startMirror(mirrorType)
+        currentMirror = mirrorType
+        showOSD(OSD.videoNotFiltered)
+      }else{
         keypressPreventAction()
-      } else if (mirrorType ==='filter'){
-        mirrorType = 'withoutFilter'
+      }
+    }
+    if (data[0] === '2'){
+      if (!recording && !playing){
+        mirrorType = 'mirror_filter1'
         startMirror(mirrorType)
-      } else {
-        mirrorType = 'filter'
+        currentMirror = mirrorType
+        showOSD(OSD.videoFilter1)
+      }else{
+        keypressPreventAction()
+      }
+    }
+    if (data[0] === '3'){
+      if (!recording && !playing){
+        mirrorType = 'mirror_filter2'
         startMirror(mirrorType)
+        currentMirror = mirrorType
+        showOSD(OSD.videoFilter2)
+      }else{
+        keypressPreventAction()
       }
     }
 
@@ -84,12 +109,12 @@ gkm.events.on('key.*', function(data) {
         recording = false
         console.log('stop recording /////')
         if (recordingHandler) { recordingHandler = terminateProcess(recordingHandler.pid) }
-        showOSD(commands.onScreenDisplay.stopRecording)
+        showOSD(OSD.stopRecording)
 
       } else {
         recording = true
         console.log('recording /////')
-        showOSD(commands.onScreenDisplay.recording)
+        showOSD(OSD.recording)
         recordingHandler = childProcess.execFile('sh', ['./scripts/record.sh'], (err, stdout, stderr) => {});
       }
     }
@@ -99,7 +124,7 @@ gkm.events.on('key.*', function(data) {
       if (recording || playing){
         keypressPreventAction()
       } else {
-        showOSD(commands.onScreenDisplay.play)
+        showOSD(OSD.play)
         playHandler =  childProcess.execFile('sh', ['./scripts/play.sh'], (err, stdout, stderr) => {});
       }
     }
