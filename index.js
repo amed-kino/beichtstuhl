@@ -27,19 +27,19 @@ function closePreviousOSD(){
   if (onScreenDisplay) { onScreenDisplay = terminateProcess(onScreenDisplay.pid)}
 }
 
-function startMirror(file_name){
-  if(file_name === currentMirror){
+function startMirror(mirrorSuffix){
+  if(mirrorSuffix === currentMirror){
     keypressPreventAction(false)
   } else {
     if (mirrorHandler) { mirrorHandler = terminateProcess(mirrorHandler.pid) }
-    mirrorHandler = childProcess.execFile('sh', ['./scripts/' + file_name + '.sh'], (err, stdout, stderr) => {});
+    mirrorHandler = childProcess.execFile('sh', ['./scripts/mirror_' + mirrorSuffix + '.sh'], (err, stdout, stderr) => {});
   }
 }
 
 
 
 function initializeMirror () {
-  mirrorType = 'mirror_filter0'
+  mirrorType = 'filter0'
   startMirror(mirrorType)
   currentMirror = mirrorType
 }
@@ -74,7 +74,7 @@ gkm.events.on('key.*', function(data) {
 
     if (data[0] === '1'){
       if (!recording && !playing){
-        mirrorType = 'mirror_filter0'
+        mirrorType = 'filter0'
         startMirror(mirrorType)
         currentMirror = mirrorType
         showOSD(OSD.videoNotFiltered)
@@ -84,7 +84,7 @@ gkm.events.on('key.*', function(data) {
     }
     if (data[0] === '2'){
       if (!recording && !playing){
-        mirrorType = 'mirror_filter1'
+        mirrorType = 'filter1'
         startMirror(mirrorType)
         currentMirror = mirrorType
         showOSD(OSD.videoFilter1)
@@ -94,7 +94,7 @@ gkm.events.on('key.*', function(data) {
     }
     if (data[0] === '3'){
       if (!recording && !playing){
-        mirrorType = 'mirror_filter2'
+        mirrorType = 'filter2'
         startMirror(mirrorType)
         currentMirror = mirrorType
         showOSD(OSD.videoFilter2)
