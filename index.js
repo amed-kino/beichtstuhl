@@ -9,11 +9,13 @@ var mirrorHandler = null
 var currentMirror = null
 var currentAduioEcho = null
 var recording = false
+var recordingSaved = false
 var playing = false
 var recordingHandler = null
 var AudioEchoHandler = null
 var onScreenDisplay = null
 
+var keypressPrevented = false
 
 function terminateProcess(pid){
   terminate(pid)
@@ -77,7 +79,7 @@ gkm.events.on('key.*', function(data) {
   //  Listen to keyboard in the backgroudnd
 
   // PressIn is excluded, the app only listens to pressOut
-  if (this.event === 'key.released'){
+  if (this.event === 'key.released' && !keypressPrevented){
 
     closePreviousOSD()
 
@@ -114,7 +116,7 @@ gkm.events.on('key.*', function(data) {
 
     if (data[0] === '4'){
       if (!recording && !playing){
-        audioType = 'filter'
+        audioType = 'filter0'
         startAduioEcho(audioType)
         currentAduioEcho = audioType
         showOSD(OSD.audioNotFiltered)
@@ -143,51 +145,48 @@ gkm.events.on('key.*', function(data) {
       }
     }
 
-    // Toggle record and stop- arbitrary has been set to 'Space'
-    if (data[0] === 'Space'){
+    // Toggle record and stop- arbitrary has been set to '7'
+    if (data[0] === '7'){
       closePreviousOSD()
       if (recording){
+        // Stop Recording
+
         recording = false
+        recordingSaved = true
+
         console.log('stop recording /////')
         if (recordingHandler) {
-          // close after less that 5 seconds
-          // setTimeout(function(){
-          //   recordingHandler = terminateProcess(recordingHandler.pid)
-            showOSD(OSD.stopRecording)
-            recordingHandler.stdin.write("q")
-            recordingHandler.kill()
-          // }, 4700);
+          showOSD(OSD.stopRecording)
+          recordingHandler.stdin.write("q")
+          recordingHandler.kill()
         }
       } else {
-        recording = true
-        console.log('recording /////')
-        showOSD(OSD.recording)
-        recordingHandler = childProcess.execFile('sh', ['./scripts/record.sh'], {killSignal: 'SIGINT'});
+        // toggle between save and stop recording
+        if (!recordingSaved) {
+          // here start recording
+          console.log('recording /////')
+          recording = true
+          showOSD(OSD.recording)
+          recordingHandler = childProcess.execFile('sh', ['./scripts/record.sh'], {killSignal: 'SIGINT'});
+        } else {
+          showOSD(OSD.save)
+          playHandler =  childProcess.execFile('sh', ['./scripts/accept_last.sh'], (err, stdout, stderr) => {});
+          recordingSaved = false
+        }
       }
     }
 
-    // Toggle record and stop- arbitrary has been set to 'Space'
-    if (data[0] === 'A'){
-      if (recording){
-        keypressPreventAction()
-      } else {
-        showOSD(OSD.save)
-        playHandler =  childProcess.execFile('sh', ['./scripts/accept_last.sh'], (err, stdout, stderr) => {
-          console.log(err, stdout, stderr)
-        });
-      }
-    }
+    // Cancel button
+    if (data[0] === '8'){
+      recordingSaved = false
+      recording = false
 
-    // Toggle record and stop- arbitrary has been set to 'Space'
-    if (data[0] === 'P'){
-      if (recording){
-        keypressPreventAction()
-      }else if (playing) {
-        playHandler = terminateProcess(playHandler.pid)
-      } else {
-        showOSD(OSD.play)
-        playHandler =  childProcess.execFile('sh', ['./scripts/play.sh'], (err, stdout, stderr) => {});
+      if (recordingHandler) {
+        terminateProcess(terminateProcess)
+        recordingHandler.kill()
       }
+      if (onScreenDisplay) { terminateProcess(onScreenDisplay.pid) }
+      showOSD(OSD.reset)
     }
 
 

@@ -11,6 +11,7 @@ var recording = 'echo "REC" | ' + osd_cat_delayed
 var stopRecording = 'echo "Recording done!\n\nfile is ready!" | ' + osd_cat_smaller
 var play = 'echo "PLAY" | ' + osd_cat
 var save = 'echo "SAVED!" | ' + osd_cat_smaller
+var reset = 'echo "RESET\n\nfiles deleted" | ' + osd_cat
 
 var videoNotFiltered = 'echo "Video Without Filters" | ' + osd_cat
 var videoFilter1 = 'echo "Video Filter 1" | ' + osd_cat
@@ -26,6 +27,7 @@ module.exports = {
   stopRecording,
   play,
   save,
+  reset,
   videoNotFiltered,
   videoFilter1,
   videoFilter2,
