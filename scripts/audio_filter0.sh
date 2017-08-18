@@ -1,1 +1,1 @@
-ffplay -f alsa -i hw:0
+ffplay -f alsa -i hw:1

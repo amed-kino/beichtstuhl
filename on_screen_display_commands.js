@@ -1,7 +1,7 @@
 // osd_cat is the command that shows the OSD over the screen
 // Note: enhancement and consistency is required.
 
-var osd_cat = 'osd_cat -f -*-*-*-*-*-*-60-520-60-*-*-*-*-*'
+var osd_cat = 'osd_cat -p bottom -f -*-*-*-*-*-*-60-520-60-*-*-*-*-*'
 var osd_cat_smaller = 'osd_cat -o 320 -d 3 -c green -f -*-*-*-*-*-*-40-320-60-*-*-*-*-*'
 var osd_cat_delayed = 'osd_cat -o 320 -d 60 -f -*-*-*-*-*-*-60-520-60-*-*-*-*-*'
 var osd_cat_other_side = 'osd_cat -A right -p bottom -f -*-*-*-*-*-*-36-120-*-*-*-*-*-*'
