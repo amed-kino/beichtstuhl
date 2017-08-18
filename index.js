@@ -11,6 +11,7 @@ var currentAduioEcho = null
 var recordingHandler = null
 var onScreenDisplay = null
 var AudioEchoHandler = null
+var audioType = null
 
 var recording = false
 var playing = false
@@ -62,12 +63,13 @@ function startAduioEcho(audioSuffix){
 
 
 function initializeMirror () {
-  mirrorType = 'filter0'
+  mirrorType = '0'
   startMirror(mirrorType)
   currentMirror = mirrorType
 }
 
 if (!mirrorHandler){initializeMirror()}
+if (!audioType){audioType = '0'}
 
 // prevent keys from being pressed.
 function keypressPreventAction(osdShow = true) {
@@ -83,7 +85,7 @@ function showRecordingOSDAgain () {
       if(recording) {
         closePreviousOSD()
         showOSD(OSD.recording)
-      }}, 3000);
+      }}, 4000);
 }
 
 gkm.events.on('key.*', function(data) {
@@ -96,7 +98,7 @@ gkm.events.on('key.*', function(data) {
 
     if (data[0] === '1'){
       if (!recording && !playing){
-        mirrorType = 'filter0'
+        mirrorType = '0'
         startMirror(mirrorType)
         currentMirror = mirrorType
         showOSD(OSD.videoNotFiltered)
@@ -106,7 +108,7 @@ gkm.events.on('key.*', function(data) {
     }
     if (data[0] === '2'){
       if (!recording && !playing){
-        mirrorType = 'filter1'
+        mirrorType = '1'
         startMirror(mirrorType)
         currentMirror = mirrorType
         showOSD(OSD.videoFilter1)
@@ -116,7 +118,7 @@ gkm.events.on('key.*', function(data) {
     }
     if (data[0] === '3'){
       if (!recording && !playing){
-        mirrorType = 'filter2'
+        mirrorType = '2'
         startMirror(mirrorType)
         currentMirror = mirrorType
         showOSD(OSD.videoFilter2)
@@ -127,7 +129,7 @@ gkm.events.on('key.*', function(data) {
 
     if (data[0] === '4' && !audioEchoing){
       if (!recording && !playing){
-        audioType = 'filter0'
+        audioType = '0'
         startAduioEcho(audioType)
         currentAduioEcho = audioType
         showOSD(OSD.audioNotFiltered)
@@ -137,7 +139,7 @@ gkm.events.on('key.*', function(data) {
     }
     if (data[0] === '5' && !audioEchoing){
       if (!recording && !playing){
-        audioType = 'filter1'
+        audioType = '1'
         startAduioEcho(audioType)
         currentAduioEcho = audioType
         showOSD(OSD.audioFilter1)
@@ -147,7 +149,7 @@ gkm.events.on('key.*', function(data) {
     }
     if (data[0] === '6' && !audioEchoing){
       if (!recording && !playing){
-        audioType = 'filter2'
+        audioType = '2'
         startAduioEcho(audioType)
         currentAduioEcho = audioType
         showOSD(OSD.audioFilter2)
@@ -181,7 +183,8 @@ gkm.events.on('key.*', function(data) {
           recordingHandler = childProcess.execFile('sh', ['./scripts/record.sh'], {killSignal: 'SIGINT'});
         } else {
           showOSD(OSD.save)
-          playHandler =  childProcess.execFile('sh', ['./scripts/accept_last.sh'], (err, stdout, stderr) => {});
+          console.log(mirrorType + audioType)
+          playHandler =  childProcess.execFile('sh', ['./scripts/record_' + mirrorType + audioType + '.sh'], (err, stdout, stderr) => {});
           recordingSaved = false
         }
       }
@@ -235,7 +238,7 @@ process.on('exit', exitHandler.bind(null,{cleanup:true}));
 process.on('SIGINT', exitHandler.bind(null, {exit:true}));
 
 //catches uncaught exceptions
-process.on('uncaughtException', exitHandler.bind(null, {exit:true}));
+// process.on('uncaughtException', exitHandler.bind(null, {exit:true}));
 
 
 // end exit procedures

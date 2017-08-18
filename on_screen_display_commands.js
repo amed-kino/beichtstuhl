@@ -8,7 +8,7 @@ var osd_cat_other_side = 'osd_cat -A right -p bottom -f -*-*-*-*-*-*-36-120-*-*-
 
 var notAllowed = 'echo "Not allowed!" | ' + osd_cat_other_side
 var recording = 'echo "REC" | ' + osd_cat_delayed
-var stopRecording = 'echo "Recording done!\n\nfile is ready!" | ' + osd_cat_smaller
+var stopRecording = 'echo "Recording done!\nfile is ready!\n\nPress again to submit!" | ' + osd_cat_smaller
 var play = 'echo "PLAY" | ' + osd_cat
 var save = 'echo "SAVED!" | ' + osd_cat_smaller
 var reset = 'echo "RESET\n\nfiles deleted" | ' + osd_cat
