@@ -8,14 +8,16 @@ var OSD = require('./on_screen_display_commands.js')
 var mirrorHandler = null
 var currentMirror = null
 var currentAduioEcho = null
-var recording = false
-var recordingSaved = false
-var playing = false
 var recordingHandler = null
-var AudioEchoHandler = null
 var onScreenDisplay = null
+var AudioEchoHandler = null
 
+var recording = false
+var playing = false
+var audioEchoing = false
+var recordingSaved = false
 var keypressPrevented = false
+
 
 function terminateProcess(pid){
   terminate(pid)
@@ -40,11 +42,20 @@ function startMirror(mirrorSuffix){
 }
 
 function startAduioEcho(audioSuffix){
+  if (audioEchoing) {
+    return true
+  }
+
   if(audioSuffix === currentAduioEcho){
     keypressPreventAction(false)
   } else {
     if (AudioEchoHandler) { AudioEchoHandler = terminateProcess(AudioEchoHandler.pid) }
     AudioEchoHandler = childProcess.execFile('sh', ['./scripts/audio_' + audioSuffix + '.sh'], (err, stdout, stderr) => {});
+    audioEchoing = true
+    setTimeout(function(){
+      audioEchoing = false
+      AudioEchoHandler = terminateProcess(AudioEchoHandler.pid)
+    }, 4000);
   }
 }
 
@@ -114,7 +125,7 @@ gkm.events.on('key.*', function(data) {
       }
     }
 
-    if (data[0] === '4'){
+    if (data[0] === '4' && !audioEchoing){
       if (!recording && !playing){
         audioType = 'filter0'
         startAduioEcho(audioType)
@@ -124,7 +135,7 @@ gkm.events.on('key.*', function(data) {
         keypressPreventAction()
       }
     }
-    if (data[0] === '5'){
+    if (data[0] === '5' && !audioEchoing){
       if (!recording && !playing){
         audioType = 'filter1'
         startAduioEcho(audioType)
@@ -134,7 +145,7 @@ gkm.events.on('key.*', function(data) {
         keypressPreventAction()
       }
     }
-    if (data[0] === '6'){
+    if (data[0] === '6' && !audioEchoing){
       if (!recording && !playing){
         audioType = 'filter2'
         startAduioEcho(audioType)
