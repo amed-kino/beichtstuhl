@@ -7,7 +7,7 @@ It is only referred here, in no other places, the relation of this tool to Ubunt
 #### NOTE:
 Since we had some issues on the deployment, where recording audio and video with filters was not good on deployment device, we had to add some fast implementations to the script. we used `rubberband` (to download `$ apt-get install rubberband-cli`) to split the audio, change the pitch and recombine it. The scripts/ dir is still placeholder for all scripting possibilities.  
 
-**reverting to:** `a465fc09cf76077b813e5f1add7fd1a7c73019f1` which is [Mapping all needed keys](/commit/a465fc09cf76077b813e5f1add7fd1a7c73019f1) commit will get the tool back to its orginal state.
+**reverting to:** a465fc09cf76077b813e5f1add7fd1a7c73019f1 which is `Mapping all needed keys` commit will get the tool back to its original state.
 ## System Requirements
 Root privileges may be required, adding `$ sudo _command_` before every command will fix it.
 ### 1- node.js (6.9.x)
